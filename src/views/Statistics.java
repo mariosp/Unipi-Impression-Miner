@@ -38,7 +38,11 @@ private void selectedOption(char read) throws InterruptedException, ExecutionExc
 				
 				List<SearchKeyword> newSk = findKeyword(searchKeywordAll,s);
 				if(!newSk.isEmpty()) {
-					
+					System.out.println("Timeline for keyword : " + newSk.get(0).keyword);
+					for(SearchKeyword sk:newSk) {
+						System.out.println(sk.timestamp + " -> search keyword found: " + sk.count);
+					}
+					System.out.println();
 				}else {
 					
 				}
