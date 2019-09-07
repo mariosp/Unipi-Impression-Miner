@@ -17,7 +17,8 @@ public class MainMenu {
 		System.out.println("1. Insert search keywords");
 		System.out.println("2. Start Impression miner");
 		System.out.println("3. Statistics");
-		System.out.println("4. Exit application");
+		System.out.println("4. Search History");
+		System.out.println("5. Exit application");
 		try {
 			readOption();
 		} catch (InterruptedException e) {
@@ -34,7 +35,7 @@ public class MainMenu {
 		
 		try{
 			int read = in.read();
-			while(read<49 || read>51) {
+			while(read<49 || read>53) {
 				System.out.println(read);
 				read = in.read();
 				
@@ -75,6 +76,11 @@ public class MainMenu {
 			statistics.showOptionMenu();
 			break;
 		case '4':
+			System.out.println("test.");
+			SearchInfo searchinfo = new SearchInfo();
+			searchinfo.showOptionMenu();
+			break;
+		case '5':
 			System.exit(0);
 			break;
 		}
