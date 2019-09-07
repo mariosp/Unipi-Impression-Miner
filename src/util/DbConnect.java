@@ -91,9 +91,10 @@ public class DbConnect {
 	            while (rs.next()) {
 	            	System.out.print(rs.getString("keyword") +" || ");
 	            	i++;
-	            	if(i==5)
+	            	if(i==5) {
 	            		i = 1;
 	            	System.out.print("\n");
+	            	}
 	            	}
 	        } catch (SQLException e) {
 	            System.out.println(e.getMessage());

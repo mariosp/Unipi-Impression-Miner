@@ -15,7 +15,7 @@ public class Statistics {
 	public void showOptionMenu() {
 		System.out.println("--- Statistics Menu ---");
 		System.out.println("Press one option :");
-		System.out.println("1. Show Keyword");
+		System.out.println("1. Show Keyword timeline");
 		try {
 			readOption();
 		} catch (InterruptedException e) {
@@ -42,7 +42,6 @@ private void selectedOption(char read) throws InterruptedException, ExecutionExc
 					for(SearchKeyword sk:newSk) {
 						System.out.println(sk.timestamp + " -> search keyword found: " + sk.count);
 					}
-					System.out.println();
 				}else {
 					
 				}
@@ -56,6 +55,7 @@ private void selectedOption(char read) throws InterruptedException, ExecutionExc
 		}
 		
 	}
+
 
 private List<SearchKeyword> findKeyword(List<SearchKeyword> searchKeywordAll,String keyword) {
 	List<SearchKeyword> newSk = new ArrayList<>();

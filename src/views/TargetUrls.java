@@ -5,8 +5,17 @@ import java.util.List;
 
 public class TargetUrls {
 	String[] urls = {
-			"https://medium.com/",
-			"https://edition.cnn.com/"
+			"https://www.theverge.com/tech",
+			"https://www.bbc.com/news/technology",
+			"https://www.cnet.com/news/",
+			"https://www.gadgetsnow.com/tech-news",
+			"https://www.wired.co.uk/topic/technology",
+			"https://gadgets.ndtv.com/news",
+			"https://thenextweb.com/",
+			"https://gizmodo.com/",
+			"https://www.techradar.com/",
+			"https://mashable.com/?europe=true"
+			
 	};
 	
 	List<Url> urlList;
