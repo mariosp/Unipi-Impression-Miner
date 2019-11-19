@@ -1,12 +1,11 @@
 package views;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import util.UserInputs;
 import java.util.concurrent.ExecutionException;
 
 public class MainMenu {
 	InsertKeywords insertKeywords = new InsertKeywords();
+	UserInputs inputs = new UserInputs();
 
 	/**
 	 * Main Menu
@@ -19,69 +18,59 @@ public class MainMenu {
 		System.out.println("2. Start Impression miner");
 		System.out.println("3. Statistics");
 		System.out.println("4. Search History");
-		System.out.println("5. Exit application");
-
+		System.out.println("5. Clear Console");
+		System.out.println("6. Exit application");
 		try {
-			readUserOption();
+			/**
+			 * User is selecting an option
+			 * by pressing a valid menu option
+			 * and causes selectedOption() to execute.
+			 */
+			int userInput = inputs.onInputNumber();
+			onSelectOption(userInput);
+
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * User is selecting an option
-	 * by pressing a valid menu option
-	 * and causes selectedOption() to execute.
-	 */
-	private void readUserOption() throws InterruptedException, ExecutionException {
-		try{
-			// reading user input line by line
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			String line = reader.readLine();
-			// execute selectedOption()
-			onSelectOption(line);
-
-        }catch(NumberFormatException nfe){
-            System.err.println("Invalid Format!");
-        } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
 	/**
 	 *
 	 * @param option
 	 */
-	private void onSelectOption(String option) throws InterruptedException, ExecutionException {
+	private void onSelectOption(int option) throws InterruptedException, ExecutionException {
 		
 		switch(option) {
-		case "1":
+		case 1:
 			insertKeywords.showMenu();
-			clearScreen();
 			showOptions();
 			break;
-		case "2":
+		case 2:
 			if(insertKeywords.getSearchKeywords().size() != 0) {
 				ImpressionMiner im = new ImpressionMiner(insertKeywords.getSearchKeywords());
 				im.setTasks();
-				clearScreen();
 				showOptions();
 			}else {
 			System.out.println("The list is empty, please select option 1 first.");
 			showOptions();
 			}
 			break;
-		case "3":
+		case 3:
 			Statistics statistics = new Statistics();
 			statistics.showOptionMenu();
+			showOptions();
 			break;
-		case "4":
+		case 4:
 			SearchInfo searchinfo = new SearchInfo();
 			searchinfo.showOptionMenu();
+			showOptions();
 			break;
-		case "5":
+		case 5:
+			clearConsole();
+			showOptions();
+			break;
+		case 6:
 			System.exit(0);
 			break;
 			default:
@@ -92,17 +81,28 @@ public class MainMenu {
 		
 	}
 
-	public static void clearScreen() {
+	public static void clearConsole() {
 		try {
-			if (System.getProperty("os.name").contains("Windows"))
-				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-			else
-				Runtime.getRuntime().exec("clear");
-		}catch (Exception E) {
-			System.out.println((E));
+			Process exitCode;
+			Runtime r = Runtime.getRuntime();
+			if (System.getProperty("os.name").startsWith("Window")) {
+				exitCode = r.exec("cls");
+			} else {
+				exitCode = r.exec("clear");
+			}
+			System.out.println(exitCode);
+			for (int j = 0; j < 200; j++) {
+				System.out.println();
+			}
+			System.out.println("\n");
+			System.out.println("******************************************");
+			System.out.println("       | The Console is clean |");
+			System.out.println("******************************************");
+			System.out.println("\n");
+
+		} catch (Exception e) {
+			  e.printStackTrace();
 		}
-//	    System.out.print("\033[H\033[2J");
-//	    System.out.flush();
 	}
 	
 }

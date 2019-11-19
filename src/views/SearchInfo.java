@@ -13,47 +13,41 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import util.DbConnect;
+import util.UserInputs;
 
 public class SearchInfo {
-
+	UserInputs inputs = new UserInputs();
 	public void showOptionMenu() {
 		System.out.println("--- Search Info Menu ---");
 		System.out.println("Press one option :");
 		System.out.println("1. Show search history");
 		System.out.println("2. Repeat search");
 		try {
-			readOption();
+			int userInput = inputs.onInputNumber();
+			selectedOption(userInput);
 		} catch (InterruptedException e) {
-			
+
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
 	}
 
-private void selectedOption(char read) throws InterruptedException, ExecutionException {
+private void selectedOption(int option) throws InterruptedException, ExecutionException {
 	
-	switch(read) {
-	case '1':
-		int lastid = selectSearchHistoryAndKeywords();
+	switch(option) {
+	case 1:
+		selectSearchHistoryAndKeywords();
 		System.out.println("Press the id of the search to view the results on the search or 0 to exit");
-		String s = readLine();
-		System.out.println(s);
-		System.out.println(lastid);
-		if(s.equals(String.valueOf(lastid))) {
-			System.out.println("mbika");
-			showResult(lastid);
-		}
+		int inputId = inputs.onInputNumber();
+		showResult(inputId);
 	break;
-	case '2':
-		int lastid2 = selectSearchHistoryAndKeywords();
+	case 2:
+		selectSearchHistoryAndKeywords();
 		System.out.println("Press the id of the search to repeat the impression miner or 0 to exit");
-		String t = readLine();
-		if(t.equals(String.valueOf(lastid2))) {
-			ImpressionMiner im = new ImpressionMiner(searchKeywordsById(lastid2));
-			im.setTasks();
-		}
-		
+		int selectedId = inputs.onInputNumber();
+		ImpressionMiner im = new ImpressionMiner(searchKeywordsById(selectedId));
+		im.setTasks();
 	break;
 	}
 }
@@ -77,42 +71,7 @@ private void showResult(int id) {
 	
 }
 
-private String readLine() {
-	String s = null;
-	BufferedReader readSearch = new BufferedReader(new InputStreamReader(System.in));
-	try {
-		s = readSearch.readLine();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return s;
-}
-
-private void readOption() throws InterruptedException, ExecutionException {
-	
-	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-	
-	try{
-		int read = in.read();
-		while(read<49 || read>51) {
-			read = in.read();
-			
-		}
-		
-		selectedOption((char) read);
-        
-    }catch(NumberFormatException nfe){
-        System.err.println("Invalid Format!");
-    } catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-}
-
-public int selectSearchHistoryAndKeywords(){
-	int lastid = 0;
+public void selectSearchHistoryAndKeywords(){
     String sql = "SELECT * FROM search_h";
  
     try (Connection conn = DbConnect.getConnection();
@@ -126,14 +85,11 @@ public int selectSearchHistoryAndKeywords(){
 	       		System.out.print(sh.keyword +" || ");
 	       	}	
 	       	System.out.println();
-	       	
-	       	lastid = rs.getInt("id");
         }
     } catch (SQLException e) {
         System.out.println(e.getMessage());
     }
-    
-    return lastid;
+
     
 }
 
