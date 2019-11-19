@@ -6,48 +6,78 @@ import java.util.List;
 
 import views.SearchKeyword;
 
+/**
+ * Connect To The SQLite Database
+ */
 public class DbConnect {
-	public static String url = "jdbc:sqlite:data.db";
-	DbConnect(){};
-	
+	// Path to the database file
+	private static final String JDBC_URL = "jdbc:sqlite:data.db";
+
 	public static void connect() {
-        Connection conn = null;
+        Connection connection = null;
         try {
-            // db parameters
-//            String url = "jdbc:sqlite:data.db";
             // create a connection to the database
-            conn = DriverManager.getConnection(url);
-            //System.out.println("Connection to SQLite has been established.");
+			connection = DriverManager.getConnection(JDBC_URL);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
             try {
-                if (conn != null) {
-                    conn.close();
+                if (connection != null) {
+					connection.close();
                 }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
             }
         }
     }
-	
+
+	/**
+	 * Connect to the database file
+	 * @return the Connection object
+	 */
+	public static Connection getConnection()  {
+
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(JDBC_URL);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return connection;
+	}
+
+	/**
+	 * Create new database
+	 *
+	 * @param fileName the database file name
+	 */
 	 public static void createNewDatabase(String fileName) {
-	        try (Connection conn = DriverManager.getConnection(url)) {
+
+		 String url = "jdbc:sqlite:" + fileName;
+
+		 try (Connection conn = DriverManager.getConnection(url)) {
 	            if (conn != null) {
 	                DatabaseMetaData meta = conn.getMetaData();
-	               // System.out.println("The driver name is " + meta.getDriverName());
-	               // System.out.println("A new database has been created.");
+	                System.out.println("The driver name is " + meta.getDriverName());
+	                System.out.println("A new database has been created.");
 	            }
 
 	        } catch (SQLException e) {
 	            System.out.println(e.getMessage());
 	        }
 	    }
-	 
-	 public static void createNewTable() {
+
+	/**
+	 * Create a new table in our database
+	 *
+	 * @param fileName the database file name
+	 */
+	 public static void createNewTable(String fileName) {
 	        // SQLite connection string
-	       // String url = "jdbc:sqlite:data.db";
-	        // SQL statement for creating a new table
+			 String url = "jdbc:sqlite:" + fileName;
+
+	        // SQL statement for creating new tables
 	        String sqlsearch = "CREATE TABLE IF NOT EXISTS search_h (\n"
 	                + "	id integer PRIMARY KEY AUTOINCREMENT,\n"
 	                + "	timestamp text NOT NULL\n"
@@ -72,7 +102,7 @@ public class DbConnect {
 	        
 	        try (Connection conn = DriverManager.getConnection(url);
 	             Statement stmt = conn.createStatement()) {
-	            // create a new table
+	            // create  new tables
 	            stmt.execute(sqlsearch);
 	            stmt.execute(sqltarget_results);
 	            stmt.execute(sqlskey);
@@ -80,12 +110,17 @@ public class DbConnect {
 	            System.out.println(e.getMessage());
 	        }
 	    }
-	 
+
+	/**
+	 * print all rows in the search_keywords table
+	 */
 	 public static void printAllSearchKeywords(){
 	        String sql = "SELECT DISTINCT keyword FROM search_keywords";
-	        try (Connection conn = DriverManager.getConnection(url);
+
+	        try (Connection conn = DriverManager.getConnection(JDBC_URL);
 	             Statement stmt  = conn.createStatement();
 	             ResultSet rs    = stmt.executeQuery(sql)){
+
 	            // loop through the result set
 	        	int i =1;
 	            while (rs.next()) {
@@ -100,18 +135,22 @@ public class DbConnect {
 	            System.out.println(e.getMessage());
 	        }
 	        System.out.print("\n");
-	        
 	 }
-	 
+
+	/**
+	 * return all search_keywords
+	 */
 	    public static List<SearchKeyword> selectAllSearchKeywords(){
 	    	List<SearchKeyword> queryResult = new ArrayList<>();
+
 	        String sql = "SELECT * FROM search_keywords";
-	        try (Connection conn = DriverManager.getConnection(url);
+
+	        try (Connection conn = DriverManager.getConnection(JDBC_URL);
 	             Statement stmt  = conn.createStatement();
 	             ResultSet rs    = stmt.executeQuery(sql)){
 	            // loop through the result set
 	            while (rs.next()) {
-//	            	System.out.print(rs.getString("keyword") +" || ");
+					//System.out.print(rs.getString("keyword") +" || ");
 	            	queryResult.add(new SearchKeyword(rs.getString("keyword"),rs.getInt("countall"),rs.getString("timestamp"),rs.getInt("sid")));
 	            }
 	        } catch (SQLException e) {
@@ -120,15 +159,6 @@ public class DbConnect {
 	        
 	        return queryResult;
 	    }
-	    
-	    public static Connection getConnection() throws SQLException {
-	    	String url = "jdbc:sqlite:data.db";
-	        Connection conn = null;
-	            conn = DriverManager.getConnection(url);
-	        //System.out.println("Connected to database");
-	        return conn;
-	    }
-	    
-	    
+
 
 }

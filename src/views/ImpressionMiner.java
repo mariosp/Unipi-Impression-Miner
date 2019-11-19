@@ -33,9 +33,6 @@ public class ImpressionMiner {
 		this.searchKeywords = searchKeywords;
 		TargetUrls targetUrls = new TargetUrls();
 		urlList = targetUrls.getList();
-//		for(int i=0;i<this.searchKeywords.size();i++){
-//			this.sCount.add(0);
-//		}
 	}
 	
 	
@@ -154,16 +151,7 @@ private void insertKeywordsToDb(String timestamp, SearchKeyword keyword) throws 
         statement.setInt(3, keyword.getCount() );
         statement.setString(4, timestamp);
         int i=statement.executeUpdate();
-        //System.out.println("ROWS INSERTED:"+i);
-        
-//        ResultSet generatedKey = statement.getGeneratedKeys();
-//        if (generatedKey.next()) {
-//            search_id = generatedKey.getInt(1);
-//        }
-//        else {
-//            throw new SQLException("no ID obtained.");
-//        }
-//        
+
         }catch(Exception e)
         { 
         	System.out.println(e);

@@ -3,59 +3,60 @@ package views;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-public class InputMenu {
-	private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+public class InsertKeywords {
 	private BufferedReader readSearch = new BufferedReader(new InputStreamReader(System.in));
-	private char readNum;
+	private int readNum;
 	private List<SearchKeyword> searchKeywords = new ArrayList<SearchKeyword>();
-	
-	
-	public InputMenu() {};
+
 	
 	public void showMenu() {
 		System.out.println("--- Insert search keywords---");
 		System.out.println("Type the number of search keywords :");
-		
+
 		readNum  = readNumber();
-		
-		System.out.println("Enter " + readNum + " search keywords :");
-		
-		
+
+		if (readNum != 0)
+			System.out.println("Enter " + readNum + " search keywords :");
+
+
 		String s = null;
-		for(int i=0;i<Character.getNumericValue(readNum);i++) {
+		for(int i=0;i<readNum;i++) {
 			try {
 				s = readSearch.readLine();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
+
 			searchKeywords.add(new SearchKeyword(s));
-			
+
 		}
 		
 		
 	}
-	
-	
-	
-	
-	private char readNumber() {
-		int read = 0;
-		try{
-			read = in.read();
-        }catch(NumberFormatException nfe){
-            System.err.println("Invalid Format!");
-        } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	private int readNumber() {
+		// Declare the variables
+		int number=0;
+		try
+		{
+			// Create Scanner object
+			Scanner s = new Scanner(System.in);
+
+			// Read the next integer from the screen
+			number = s.nextInt();
+
 		}
-		return (char) read;
-		
+		catch(InputMismatchException e)
+		{
+			// accept integer only.
+			System.out.println("--- Invalid Input. Please Input a number ---");
+			showMenu();
+		}
+
+		return number;
 	}
 	
 	

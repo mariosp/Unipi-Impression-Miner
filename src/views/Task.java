@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public class Task implements Callable{
 
@@ -26,8 +24,6 @@ public class Task implements Callable{
 	
 	@Override
 	public Object call() throws Exception {
-//				System.out.println("testStart:");
-//				System.out.println(this.url.url);
 				
 				Document doc = null;
 				try {
@@ -39,7 +35,7 @@ public class Task implements Callable{
 				
 				String text = doc.body().text();
 				getWord(text.toLowerCase());
-		
+
 		return this.targetResults;
 	}
 	

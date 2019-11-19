@@ -52,6 +52,10 @@ private void selectedOption(char read) throws InterruptedException, ExecutionExc
 			}
 		
 			break;
+			default:
+				System.out.println("Please Try Again. With a correct option.");
+				showOptionMenu();
+
 		}
 		
 	}
@@ -89,11 +93,11 @@ private void readOption() throws InterruptedException, ExecutionException {
 		
 		try{
 			int read = in.read();
-			while(read<49 || read>51) {
-				System.out.println(read);
-				read = in.read();
-				
-			}
+//			while(read<49 || read>51) {
+//				System.out.println(read);
+//				read = in.read();
+//
+//			}
 			
 			selectedOption((char) read);
             

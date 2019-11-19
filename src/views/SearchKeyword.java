@@ -7,12 +7,10 @@ public class SearchKeyword {
 	int sid;
 	
 	public SearchKeyword(String keyword) {
-		super();
 		this.keyword =keyword;
 		this.count =0;
 	}
 	public SearchKeyword(String keyword,int count,String timestamp, int sid) {
-		super();
 		this.keyword =keyword;
 		this.count = count;
 		this.timestamp = timestamp;
